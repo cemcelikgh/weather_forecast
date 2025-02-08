@@ -1,0 +1,243 @@
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --colour-one: #ebebeb;
+  --colour-two: #666666;
+  --color-thre: #171717;
+  --color-four: #f8f8f8;
+  --border-one: 1px solid #ebebeb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --colour-one: #454545;
+    --colour-two: #a1a1a1;
+    --color-thre: #eeeeee;
+    --color-four: #282828;
+    --border-one: 1px solid #454545;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.light-theme {
+  --background: #ffffff;
+  --foreground: #171717;
+  --colour-one: #ebebeb;
+  --colour-two: #666666;
+  --color-thre: #171717;
+  --color-four: #f8f8f8;
+  --border-one: 1px solid #ebebeb;
+}
+
+.dark-theme {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --colour-one: #454545;
+  --colour-two: #a1a1a1;
+  --color-thre: #eeeeee;
+  --color-four: #282828;
+  --border-one: 1px solid #454545;
+}
+
+body {
+  min-width: 300px;
+  padding: 20px 12px 15px;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  font-family: var(--font-geist-sans);
+  font-size: 27px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+main {
+  margin: 0 auto;
+  max-width: 580px;
+}
+
+section {
+  margin-top: 10px;
+}
+
+#selectors {
+  padding: 5px 20px;
+  border: var(--border-one);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#cities {
+  height: 30px;
+  background-color: var(--background);
+  color: var(--foreground);
+  border: var(--border-one);
+  border-radius: 3px;
+  font-size: medium;
+}
+
+.theme-switcher {
+  width: 104px;
+  height: 40px;
+  padding: 3px;
+  border: var(--border-one);
+  border-radius: 99px;
+}
+
+.switch {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+}
+
+.switch:has(input:checked) {
+  background-color: var(--colour-one);
+}
+
+.switch-icon {
+  width: 16px;
+  height: 16px;
+  fill: var(--colour-two);
+}
+
+input:checked + .switch-icon {
+  fill: var(--color-thre);
+}
+
+.option {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+}
+
+.wc-list {
+  list-style: none;
+  display: flex;
+  border: var(--border-one);
+}
+
+li {
+  width: calc(100% / 6);
+  border-right: var(--border-one);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+li:first-child {
+  background-color: var(--color-four);
+}
+
+li:last-child {
+  border-right: none;
+}
+
+p {
+  font-family: var(--font-geist-sans);
+  text-align: center;
+}
+
+li > div:nth-of-type(1) {
+  width: 75px;
+  height: 75px;
+}
+
+.temperatures {
+  display: flex;
+  width: 75px;
+  justify-content: space-evenly;
+}
+
+.preloader {
+  height: 136px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (width < 610px) {
+  h1 {
+    font-size: 26px;
+  }
+  main {
+    max-width: 290px;
+  }
+  #selectors {
+    padding: 5px 10px;
+  }
+  .wc-list {
+  flex-wrap:wrap;
+  }
+  li {
+    width: calc(100% / 3);
+    border-right: var(--border-one);
+    border-bottom: var(--border-one);
+  }
+  li:nth-child(3) {
+    border-right: none;
+  }
+  li:nth-child(4), li:nth-child(5), li:nth-child(6) {
+    border-bottom: none;
+  }
+}
+
+@media (width < 320px) {
+  h1 {
+    font-size: 24px;
+  }
+  main {
+    max-width: 220px;
+  }
+  #selectors {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  #cities {
+    margin-top: 5px;
+  }
+  li {
+    width: calc(100% / 2);
+  }
+  li:nth-child(3) {
+    border-right: var(--border-one);
+  }
+  li:nth-child(4) {
+    border-bottom: var(--border-one);
+  }
+  li:nth-child(5), li:nth-child(6) {
+    border-bottom: none;
+  }
+  li:nth-child(2), li:nth-child(4), li:nth-child(6) {
+    border-right: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
