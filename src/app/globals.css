@@ -53,7 +53,6 @@ html {
 
 body {
   min-width: 300px;
-  padding: 20px 12px 15px;
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
@@ -61,16 +60,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+main {
+  max-width: 580px;
+  margin: 20px auto 15px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
 h1 {
   font-family: var(--font-geist-sans);
   font-size: 27px;
   line-height: 1.5;
   text-align: center;
-}
-
-main {
-  margin: 0 auto;
-  max-width: 580px;
 }
 
 section {
@@ -133,6 +134,13 @@ input:checked + .switch-icon {
   position: absolute;
 }
 
+.preloader {
+  height: 136px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .wc-list {
   list-style: none;
   display: flex;
@@ -172,19 +180,12 @@ li > div:nth-of-type(1) {
   justify-content: space-evenly;
 }
 
-.preloader {
-  height: 136px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 @media (width < 610px) {
   h1 {
     font-size: 26px;
   }
   main {
-    max-width: 290px;
+    max-width: 314px;
   }
   #selectors {
     padding: 5px 10px;

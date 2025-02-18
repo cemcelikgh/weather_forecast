@@ -18,10 +18,10 @@ typescript
 <br><https://www.typescriptlang.org/download/>
 
 Weather forecast REST API
-<br>Feb 2025
+<br>Jun 2024
 <br><https://docs.tomorrow.io/reference/weather-forecast>
 
-Find reverse geocoding REST API
+Reverse geocoding REST API
 <br>Feb 2025
 <br><https://developer.tomtom.com/reverse-geocoding-api/documentation/reverse-geocode>
 
@@ -33,7 +33,7 @@ SVG to CSS converter
 <br>Jun 2024
 <br><https://www.svgbackgrounds.com/tools/svg-to-css/>
 
-Preloader images
+Preloader GIFs
 <br>Feb 2025
 <br><https://icons8.com/preloaders/en/miscellaneous/plant/>
 

@@ -1,10 +1,10 @@
 type DayType ={
-  time: string,
+  time: string;
   values: {
-    temperatureMax: number,
-    temperatureMin: number,
-    weatherCodeMin: number,
-    [key: string]: unknown
+    temperatureMax: number;
+    temperatureMin: number;
+    weatherCodeMin: number;
+    [key: string]: unknown;
   }
 }
 

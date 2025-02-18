@@ -9,40 +9,40 @@ import lightPreLoader from './assets/light-preloader.gif';
 import darkPreLoader from './assets/dark-preloader.gif';
 import type { DailyType } from "@/types/WeatherForecastTypes";
 import { selectTheme } from "@/lib/features/themeSlice";
-import { selectLoader, setLoader } from "@/lib/features/loaderSlice";
-import { useDispatch } from "react-redux";
 
 function WeatherForecast() {
 
-  const city  = useSelector(selectCity);
   const [ daily, setDaily ] = useState<DailyType>([]);
   const [ days, setDays ] = useState<string[]>([]);
+  const [ loader, setLoader ] = useState<boolean>(false);
   const theme = useSelector(selectTheme);
-  const loader = useSelector(selectLoader);
-  const dispatch = useDispatch();
+  const city  = useSelector(selectCity);
 
   useEffect(() => {
-    dispatch(setLoader(true));
+    setLoader(true);
     const baseURL = 'https://api.tomorrow.io/v4/weather/forecast';
     const apiKey = 'pngbGz0Ku8gfo7JQy8ZBErLWGvvolX4m';
     fetch(`${baseURL}?location=${city.name}&timesteps=1d&units=metric&apikey=${apiKey}`,
-      { method: 'GET',
+      {
+        method: 'GET',
         headers: { accept: 'application/json', 'accept-encoding': 'deflate, gzip, br' }
       }
-    ).then(response => {
-      if(!response.ok) {
-        throw new Error('Failed to fetch response: ' + response.statusText);
-      } else { return response.json() }
-    }).then(json => {
+    )
+      .then(response => {
+        if(!response.ok) {
+          throw new Error('Failed to fetch response: ' + response.statusText);
+        } else { return response.json() }
+      })
+      .then(json => {
         setDaily(json.timelines.daily.slice(0, 6));
         setDays(sixDays());
-        dispatch(setLoader(false));
+        setLoader(false);
       })
       .catch(error => {
-        alert('Hava tahmini alınamadı.');
+        alert('Hava tahminine erişilemedi.');
         console.error('Fetch Error: ', error);
       })
-  }, [city, dispatch] );
+  }, [city]);
 
   const sixDays = (): string[] => {
     const days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];

@@ -25,14 +25,21 @@ function SelectCity() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         fetch(`https://api.tomtom.com/search/2/reverseGeocode/${lat},${lon}.json?key=fIPvoNR6jQbl3jMnCArYi5AAHgQzLvpL`)
-          .then(response => response.json())
+          .then(response => {
+            if(!response.ok) {
+              throw new Error('Failed to fetch response: ' + response.statusText);
+            } else { return response.json() };
+          })
           .then(data => {
             const cityID = data.addresses[0].address.postalCode.slice(0, 2);
             if (cityID) {
               dispatch(setCity({'id': cityID , 'name': cities.entities[cityID].name }))
-            } else { console.warn('Bulunduğunuz şehir tespit edilemedi.') }
+            } else { console.warn('City could not be detected.') };
+          })
+          .catch(error => {
+            console.error('Fetch Error: ', error);
           });
-        };
+      };
       const error = (err: CurrPosiErroType) => {
         console.warn(`ERROR(${err.code}): ${err.message}`);
       };

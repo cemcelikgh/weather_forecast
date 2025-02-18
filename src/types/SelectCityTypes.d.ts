@@ -1,11 +1,11 @@
 export type CityType = {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 };
 
 export type CityAdopType = {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 };
 
 export type CurrPosiSuccType = {

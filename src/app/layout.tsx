@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import App from "./App";
+import App from "./StoreProvider";
 
 export const metadata: Metadata = {
   title: 'Hava Tahmini',
   icons: {
-    icon: 'cloud-sun-rain-solid.svg'
+    icon: '/cloud-sun-rain-solid.svg'
   }
 };
 
