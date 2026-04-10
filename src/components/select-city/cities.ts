@@ -79,7 +79,7 @@ const cities = [
   { "id": "65", "name": "Van" },
   { "id": "77", "name": "Yalova" },
   { "id": "66", "name": "Yozgat" },
-  { "id": "67", "name": "Zonguldak" }
+  { "id": "67", "name": "Zonguldak" },
 ];
 
 export default cities;

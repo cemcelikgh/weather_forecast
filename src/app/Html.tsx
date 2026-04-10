@@ -1,29 +1,24 @@
 'use client';
 
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@/lib/hooks/hooks";
 import { selectTheme } from "@/lib/features/themeSlice";
-import { Geist } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 function Html({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
 
-  const theme = useSelector(selectTheme);
+  const theme = useAppSelector(selectTheme);
 
   return (
     <html lang="en" className={theme}>
-      <body className={geistSans.variable}>
+      <body>
         {children}
       </body>
     </html>
   );
+
 }
 
 export default Html;

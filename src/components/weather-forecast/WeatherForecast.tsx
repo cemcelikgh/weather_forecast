@@ -2,46 +2,53 @@
 
 import { useState, useEffect } from "react";
 import './assets/weather-icons.css';
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@/lib/hooks/hooks";
 import { selectCity } from "@/lib/features/citySlice";
 import Image from "next/image";
 import lightPreLoader from './assets/light-preloader.gif';
 import darkPreLoader from './assets/dark-preloader.gif';
-import type { DailyType } from "@/types/WeatherForecastTypes";
+import type { DailyType } from "@/types/types";
 import { selectTheme } from "@/lib/features/themeSlice";
 
 function WeatherForecast() {
 
-  const [ daily, setDaily ] = useState<DailyType>([]);
+  const city  = useAppSelector(selectCity);
+  const theme = useAppSelector(selectTheme);
+  const [ loader, setLoader ] = useState(true);
+  const [ failure, setFailure] = useState(false);
   const [ days, setDays ] = useState<string[]>([]);
-  const [ loader, setLoader ] = useState<boolean>(false);
-  const theme = useSelector(selectTheme);
-  const city  = useSelector(selectCity);
+  const [ daily, setDaily ] = useState<DailyType>([]);
 
   useEffect(() => {
+
     setLoader(true);
-    const baseURL = 'https://api.tomorrow.io/v4/weather/forecast';
-    const apiKey = 'pngbGz0Ku8gfo7JQy8ZBErLWGvvolX4m';
-    fetch(`${baseURL}?location=${city.name}&timesteps=1d&units=metric&apikey=${apiKey}`,
+    setFailure(false);
+
+    fetch(`https://api.tomorrow.io/v4/weather/forecast?location=${city.name}` +
+      `&timesteps=1d&units=metric&apikey=${process.env.NEXT_PUBLIC_WEA_FOR_API_KEY}`,
       {
         method: 'GET',
-        headers: { accept: 'application/json', 'accept-encoding': 'deflate, gzip, br' }
+        headers: { accept: 'application/json', 'accept-encoding': 'deflate, gzip, br' },
+      },
+    ).then(response => {
+      if(!response.ok) {
+        throw new Error('Could not fetch the weather forecast.');
       }
-    )
-      .then(response => {
-        if(!response.ok) {
-          throw new Error('Failed to fetch response: ' + response.statusText);
-        } else { return response.json() }
-      })
-      .then(json => {
-        setDaily(json.timelines.daily.slice(0, 6));
-        setDays(sixDays());
-        setLoader(false);
-      })
-      .catch(error => {
-        alert('Hava tahminine erişilemedi.');
-        console.error('Fetch Error: ', error);
-      })
+      return response.json();
+    }).then(data => {
+      const daily = data?.timelines?.daily?.slice(0, 6);
+      if (!daily) {
+        throw new Error('Could not retrieve the daily data.');
+      };
+      setDaily(daily);
+      setDays(sixDays());
+      setLoader(false);
+    }).catch(err => {
+      setLoader(false);
+      setFailure(true);
+      console.error(err);
+    });
+  
   }, [city]);
 
   const sixDays = (): string[] => {
@@ -63,18 +70,17 @@ function WeatherForecast() {
 
   return (
     <section id='daily-forecast'>
-      {loader &&
+      {loader ?
       <div className='preloader'>
         <Image 
           src={loaderBGC === '#0a0a0a' ? darkPreLoader : lightPreLoader}
           width={64}
           height={64}
-          alt="Yükleniyor..."
           unoptimized
+          alt="Yükleniyor..."
         />
       </div>
-      }
-      {!loader &&
+      :
       <ul className="wc-list">
         {daily.map((day, index) => (
         <li key={index}>
@@ -88,8 +94,14 @@ function WeatherForecast() {
         ))}
       </ul>
       }
+      {failure &&
+      <div className="failure">
+        Hava tahminine erişilemedi.
+      </div>
+      }
     </section>
   );
-};
+
+}
 
 export default WeatherForecast;

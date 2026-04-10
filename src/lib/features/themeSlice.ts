@@ -10,12 +10,10 @@ export const themeSlice = createSlice({
     },
     setLightTheme: (_state, action: PayloadAction<string>) => {
       return action.payload;
-    }
-  }
-})
+    },
+  },
+});
 
 export const { setDarkTheme, setLightTheme } = themeSlice.actions;
-
 export const selectTheme = (state: RootState) => state.theme;
-
 export default themeSlice.reducer;

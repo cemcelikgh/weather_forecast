@@ -1,26 +1,28 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '@/lib/hooks/hooks';
 import { setDarkTheme, setLightTheme } from '@/lib/features/themeSlice';
 
 function ChangeTheme() {
 
-  const [systemTheme, setSystemTheme] = useState<string>('system-theme');
+  const [systemTheme, setSystemTheme] = useState('system-theme');
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
     const preColSch = mediaQuery.matches ? 'light-theme' : 'dark-theme';
     setSystemTheme(preColSch);
   }, []);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   function handleSetTheme(theme: string) {
     if (theme === 'light-theme') {
       dispatch(setLightTheme('light-theme'));
     } else {
       dispatch(setDarkTheme('dark-theme'))
-    }
-  }
+    };
+  };
 
   const [check, setCheck] = useState([false, true, false]);
 
@@ -66,7 +68,8 @@ function ChangeTheme() {
         </svg>
       </label>
     </form>
-  )
+  );
+
 }
 
 export default ChangeTheme;

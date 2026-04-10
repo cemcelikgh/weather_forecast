@@ -4,12 +4,11 @@ import { Provider } from 'react-redux';
 import { store } from '../lib/store';
 import Html from './Html';
 
-function App({
+function ReduxProvider({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
-
   return (
     <Provider store={store}>
       <Html>
@@ -19,4 +18,4 @@ function App({
   );
 }
 
-export default App;
+export default ReduxProvider;

@@ -1,11 +1,14 @@
-type DayType ={
-  time: string;
+export type CityType = {
+  id: string;
+  name: string;
+};
+
+type DayType = {
   values: {
     temperatureMax: number;
     temperatureMin: number;
     weatherCodeMin: number;
-    [key: string]: unknown;
-  }
-}
+  },
+};
 
 export type DailyType = DayType[];
