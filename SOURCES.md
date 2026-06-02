@@ -2,19 +2,19 @@ next
 <br>react
 <br>react-dom
 <br>react-scripts
-<br>Feb 2025
+<br>Jun 2026
 <br><https://nextjs.org/docs/app/getting-started/installation>
 
 react-redux
 <br>@reduxjs/toolkit
-<br>Feb 2025
-<br><https://redux-toolkit.js.org/tutorials/typescript>
+<br>Jun 2026
+<br><https://redux-toolkit.js.org/usage/nextjs>
 
 typescript
 <br>@types/node
 <br>@types/react
 <br>@types/react-dom
-<br>Feb 2025
+<br>Jun 2026
 <br><https://www.typescriptlang.org/download/>
 
 Weather forecast REST API
@@ -37,10 +37,7 @@ Preloader GIFs
 <br>Feb 2025
 <br><https://icons8.com/preloaders/en/miscellaneous/plant/>
 
-cloud-sun-rain-solid.svg
-<br>Aug 2024
-<br><https://fontawesome.com/icons/cloud-sun-rain?f=classic&s=solid>
-
 SVG's of theme icons
+<br>icon.svg
 <br>Jan 2025
-<br><https://fontawesome.com/search>
+<br><https://fontawesome.com/icons>

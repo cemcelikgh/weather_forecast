@@ -1,7 +1,7 @@
-import SelectCity from "@/components/select-city";
-import WeatherForecast from "@/components/weather-forecast";
+import SelectCity from "@/components/select-city/SelectCity";
+import WeatherForecast from "@/components/weather-forecast/WeatherForecast";
 
-export default function Home() {
+function Home() {
   return (
     <main>
       <h1>Hava Tahmini</h1>
@@ -10,3 +10,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default Home;

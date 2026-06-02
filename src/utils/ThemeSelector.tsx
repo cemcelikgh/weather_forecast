@@ -1,37 +1,50 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setDarkTheme, setLightTheme } from '@/lib/features/themeSlice';
+import { setTheme } from '@/lib/features/themeSlice';
+import { useAppDispatch } from '@/lib/hooks';
+import { Theme } from '@/types/types';
+import { useEffect, useRef, useState } from 'react';
 
-function ChangeTheme() {
+function ThemeSelector() {
 
-  const [systemTheme, setSystemTheme] = useState<string>('system-theme');
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-    const preColSch = mediaQuery.matches ? 'light-theme' : 'dark-theme';
-    setSystemTheme(preColSch);
-  }, []);
-
-  const dispatch = useDispatch();
-  function handleSetTheme(theme: string) {
-    if (theme === 'light-theme') {
-      dispatch(setLightTheme('light-theme'));
-    } else {
-      dispatch(setDarkTheme('dark-theme'))
-    }
-  }
+  const prefersColorSchemeRef = useRef<Theme>(null);
 
   const [check, setCheck] = useState([false, true, false]);
 
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    prefersColorSchemeRef.current = mediaQuery.matches ? 'dark' : 'light';
+
+    function changeHandler(event: MediaQueryListEvent) {
+      const mode = event.matches ? 'dark' : 'light';
+      prefersColorSchemeRef.current = mode;
+      if (check[1]) dispatch(setTheme(mode));
+    };
+
+    mediaQuery.addEventListener('change', changeHandler);
+    return () => { mediaQuery.removeEventListener('change', changeHandler) };
+
+  }, [check[1], dispatch]);
+
+  function handleSetTheme(theme: Theme | null) {
+    if (theme === 'dark') {
+      dispatch(setTheme('dark'));
+    } else {
+      dispatch(setTheme('light'));
+    };
+  };
+
   return (
-    <form className='theme-switcher'>
+    <fieldset className='theme-switcher'>
       <label htmlFor='set-light-theme' className='switch'>
-        <input type="radio" name="theme" value='set-light-theme'
+        <input type="radio" name="theme" value='light'
           id="set-light-theme" className='option'
           checked={check[0]}
           onChange={() => {
-            handleSetTheme('light-theme');
+            handleSetTheme('light');
             setCheck([true, false, false]);
           }}
         />
@@ -40,11 +53,11 @@ function ChangeTheme() {
         </svg>
       </label>
       <label htmlFor='set-system-theme' className='switch'>
-        <input type="radio" name="theme" value='set-system-theme'
+        <input type="radio" name="theme" value='system'
           id="set-system-theme" className='option'
           checked={check[1]}
           onChange={() => {
-            handleSetTheme(systemTheme);
+            handleSetTheme(prefersColorSchemeRef.current);
             setCheck([false, true, false]);
           }}
         />
@@ -53,11 +66,11 @@ function ChangeTheme() {
         </svg>
       </label>
       <label htmlFor='set-dark-theme' className='switch'>
-        <input type="radio" name="theme" value='set-dark-theme'
+        <input type="radio" name="theme" value='dark'
           id="set-dark-theme" className='option'
           checked={check[2]}
           onChange={() => {
-            handleSetTheme('dark-theme');
+            handleSetTheme('dark');
             setCheck([false, false, true]);
           }}
         />
@@ -65,8 +78,9 @@ function ChangeTheme() {
           <path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/>
         </svg>
       </label>
-    </form>
-  )
+    </fieldset>
+  );
+
 }
 
-export default ChangeTheme;
+export default ThemeSelector;
