@@ -24,10 +24,8 @@ function SelectCity() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         const apiKey = process.env.NEXT_PUBLIC_REV_GEO_API_KEY;
-        if (!apiKey) throw new Error('NEXT_PUBLIC_REV_GEO_API_KEY is missing');
-        fetch('https://api.tomtom.com/search/2/reverseGeocode/' +
-          `${lat},${lon}.json?key=${apiKey}`
-        ).then(response => {
+        fetch(`/.netlify/functions/reverseGeocode?lat=${lat}&lon=${lon}`)
+        .then(response => {
           if(!response.ok) { throw new Error('Could not fetch the geocode.') };
           return response.json();
         }).then(data => {

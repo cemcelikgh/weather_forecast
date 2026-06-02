@@ -17,6 +17,11 @@ typescript
 <br>Jun 2026
 <br><https://www.typescriptlang.org/download/>
 
+netlify-cli
+<br>@netlify/functions
+<br>Jun 2026
+<br><https://docs.netlify.com/>
+
 Weather forecast REST API
 <br>Jun 2024
 <br><https://docs.tomorrow.io/reference/weather-forecast>
