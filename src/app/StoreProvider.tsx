@@ -2,7 +2,7 @@
 
 import { AppStore, makeStore } from '@/lib/store';
 import { Provider } from 'react-redux';
-import { useRef } from 'react';
+import { useState } from 'react';
 import Html from './Html';
 
 function StoreProvider({
@@ -11,14 +11,10 @@ function StoreProvider({
   children: React.ReactNode;
 }>) {
 
-  const storeRef = useRef<AppStore>(undefined);
-
-  if (!storeRef.current) {
-    storeRef.current = makeStore();
-  };
+  const [store] = useState<AppStore>(makeStore);
 
   return (
-    <Provider store={storeRef.current}>
+    <Provider store={store}>
       <Html>
         {children}
       </Html>
