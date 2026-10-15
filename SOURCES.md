@@ -1,7 +1,6 @@
 next
 <br>react
 <br>react-dom
-<br>react-scripts
 <br>Jun 2026
 <br><https://nextjs.org/docs/app/getting-started/installation>
 
@@ -33,9 +32,9 @@ SVG to CSS converter
 <br>Jun 2024
 <br><https://www.svgbackgrounds.com/tools/svg-to-css/>
 
-Preloader GIFs
-<br>Feb 2025
-<br><https://icons8.com/preloaders/en/miscellaneous/plant/>
+lds-ripple loader
+<br>Jun 2025
+<br><https://loading.io/css/>
 
 SVG's of theme icons
 <br>icon.svg

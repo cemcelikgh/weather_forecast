@@ -1,11 +1,11 @@
 'use client';
 
-import { Provider } from 'react-redux';
-import Html from './Html';
-import { useRef } from 'react';
 import { AppStore, makeStore } from '@/lib/store';
+import { Provider } from 'react-redux';
+import { useRef } from 'react';
+import Html from './Html';
 
-function ReduxProvider({
+function StoreProvider({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -27,4 +27,4 @@ function ReduxProvider({
 
 }
 
-export default ReduxProvider;
+export default StoreProvider;

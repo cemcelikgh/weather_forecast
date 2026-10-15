@@ -1,20 +1,20 @@
 'use client';
 
 import { ChangeEvent, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { selectCity, setCity } from "@/lib/features/citySlice";
 import { City } from "@/types/types";
 import { createEntityAdapter } from "@reduxjs/toolkit";
+import { selectCity, setCity } from "@/lib/features/citySlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import citiesArr from "./cities";
-import ThemeSelector from "@/utils/ThemeSelector";
+import ThemeSelector from "./theme-selector/ThemeSelector";
 
 const cityAdapter = createEntityAdapter<City>();
 const cities = cityAdapter.setAll(cityAdapter.getInitialState(), citiesArr);
 
-function SelectCity() {
+function Selectors() {
 
-  const dispatch = useAppDispatch();
   const city = useAppSelector(selectCity);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
 
@@ -25,15 +25,14 @@ function SelectCity() {
         const lon = position.coords.longitude;
         const apiKey = process.env.NEXT_PUBLIC_REV_GEO_API_KEY;
         if (!apiKey) throw new Error('NEXT_PUBLIC_REV_GEO_API_KEY is missing');
-        fetch('https://api.tomtom.com/search/2/reverseGeocode/' +
-          `${lat},${lon}.json?key=${apiKey}`
-        ).then(response => {
+        fetch(`https://api.tomtom.com/search/2/reverseGeocode/${lat},${lon}.json?key=${apiKey}`)
+        .then(response => {
           if(!response.ok) { throw new Error('Could not fetch the geocode.') };
           return response.json();
         }).then(data => {
-          const cityID = data?.addresses?.[0]?.address?.postalCode?.slice(0, 2);
-          if (!cityID) { throw new Error('Could not retrieve the city.') };
-          dispatch(setCity({'id': cityID , 'name': cities.entities[cityID].name }));
+          const cityId = data?.addresses?.[0]?.address?.postalCode?.slice(0, 2);
+          if (!cityId) { throw new Error('Could not retrieve the city.') };
+          dispatch(setCity({'id': cityId , 'name': cities.entities[cityId].name }));
         }).catch(err => { console.error(err) });
       };
 
@@ -45,9 +44,9 @@ function SelectCity() {
 
   }, [dispatch]);
 
-  const handleCityChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const ID = event.target.value;
-    dispatch(setCity({ 'id': ID , 'name': cities.entities[ID].name }));
+  const handleSelectCity = (event: ChangeEvent<HTMLSelectElement>) => {
+    const id = event.target.value;
+    dispatch(setCity({ 'id': id , 'name': cities.entities[id].name }));
   };
 
   return (
@@ -55,15 +54,15 @@ function SelectCity() {
     <select
       id="cities"
       value={city.id}
-      onChange={handleCityChange}
+      onChange={handleSelectCity}
     >
-    {cities.ids.map(id => (
-      <option key={cities.entities[id].id}
+      {cities.ids.map(id =>
+      <option
         value={cities.entities[id].id}
+        key={cities.entities[id].id}
       >
         {cities.entities[id].name}
-      </option>
-    ))}
+      </option>)}
     </select>
     <ThemeSelector />
   </section>
@@ -71,4 +70,4 @@ function SelectCity() {
 
 }
 
-export default SelectCity;
+export default Selectors;

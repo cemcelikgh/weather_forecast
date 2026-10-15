@@ -1,99 +1,67 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import './assets/weather-icons.css';
-import { useAppSelector } from "@/lib/hooks";
+import { Daily, Days } from "./types";
 import { selectCity } from "@/lib/features/citySlice";
-import Image from "next/image";
-import lightPreLoader from './assets/light-preloader.gif';
-import darkPreLoader from './assets/dark-preloader.gif';
-import { selectTheme } from "@/lib/features/themeSlice";
+import { useAppSelector } from "@/lib/hooks";
+import { useState, useEffect } from "react";
+import './weather-icons.css';
 
-type Days = 'Pazar' | 'Pazartesi' | 'Salı' | 'Çarşamba' | 'Perşembe' | 'Cuma' | 'Cumartesi';
-
-interface Day {
-  values: {
-    temperatureMax: number;
-    temperatureMin: number;
-    weatherCodeMin: number;
-  },
+const sixDays = () => {
+  const days: Days[] = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+  const todayIndex = new Date().getDay();
+  const sixDays: Days[] = [];
+  for (let i = 0; i < 6; i++) {
+    sixDays.push(days[(todayIndex + i) % 7]);
+  };
+  return sixDays;
 };
-
-type Daily = Day[];
 
 function WeatherForecast() {
 
+  const [days, setDays] = useState<Days[]>([]);
+  const [daily, setDaily] = useState<Daily>([]);
+  const [failure, setFailure] = useState(false);
+  const [previousCity, setPreviousCity] = useState('');
   const city  = useAppSelector(selectCity);
-  const theme = useAppSelector(selectTheme);
-  const [ loader, setLoader ] = useState(true);
-  const [ failure, setFailure] = useState(false);
-  const [ days, setDays ] = useState<Days[]>([]);
-  const [ daily, setDaily ] = useState<Daily>([]);
+
+  const loading = previousCity !== city.name;
 
   useEffect(() => {
-
-    setLoader(true);
-    setFailure(false);
 
     const apiKey = process.env.NEXT_PUBLIC_WEA_FOR_API_KEY;
     if (!apiKey) throw new Error('NEXT_PUBLIC_WEA_FOR_API_KEY is missing');
 
-    fetch(`https://api.tomorrow.io/v4/weather/forecast?location=${city.name}` +
-      `&timesteps=1d&units=metric&apikey=${apiKey}`,
-      {
-        method: 'GET',
-        headers: { accept: 'application/json', 'accept-encoding': 'deflate, gzip, br' },
-      },
-    ).then(response => {
+    fetch(`https://api.tomorrow.io/v4/weather/forecast?location=${city.name}&timesteps=1d&units=metric&apikey=${apiKey}`, {
+      method: 'GET',
+      headers: { accept: 'application/json', 'accept-encoding': 'deflate, gzip, br' },
+    }).then(response => {
       if(!response.ok) { throw new Error('Could not fetch the weather forecast.') };
       return response.json();
     }).then(data => {
       const daily = data?.timelines?.daily?.slice(0, 6);
       if (!daily) { throw new Error('Could not retrieve the daily data.') };
+      setFailure(false);
       setDaily(daily);
       setDays(sixDays());
-      setLoader(false);
     }).catch(err => {
-      setLoader(false);
       setFailure(true);
       console.error(err);
-    });
-  
+    }).finally(() => { setPreviousCity(city.name) });
+
   }, [city]);
-
-  const sixDays = () => {
-    const days: Days[] = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
-    const todayIndex = new Date().getDay();
-    const sixDays: Days[] = [];
-    for (let i = 0; i < 6; i++) {
-      sixDays.push(days[(todayIndex + i) % 7]);
-    };
-    return sixDays;
-  };
-
-  const [loaderBGC, setLoaderBGC] = useState('#0a0a0a');
-  useEffect(() => {
-    const root = getComputedStyle(document.documentElement);
-    const bgColor = root.getPropertyValue('--background').trim();
-    setLoaderBGC(bgColor);
-  }, [theme]);
 
   return (
     <section id='daily-forecast'>
-      {loader ?
-      <div className='preloader'>
-        <Image 
-          src={loaderBGC === '#0a0a0a' ? darkPreLoader : lightPreLoader}
-          width={64}
-          height={64}
-          unoptimized
-          loading="eager"
-          alt="Yükleniyor..."
-        />
+    {loading ?
+      <div className="loader-container">
+        <div className="lds-ripple">
+          <div/>
+          <div/>
+        </div>
       </div>
-      : (!loader && !failure) ? 
+    : !loading && !failure ?
       <ul className="wc-list">
-        {daily.map((day, index) => (
+        {daily.map((day, index) => 
         <li key={index}>
           <p>{days[index]}</p>
           <div className={`wc${day.values.weatherCodeMin}`}></div>
@@ -101,14 +69,12 @@ function WeatherForecast() {
             <div>{Math.round(day.values.temperatureMin)}&#176;</div>
             <div>{Math.round(day.values.temperatureMax)}&#176;</div>
           </div>
-        </li>
-        ))}
+        </li>)}
       </ul>
-      : failure &&
+    : failure &&
       <div className="failure">
         Hava tahminine erişilemedi.
-      </div>
-      }
+      </div>}
     </section>
   );
 

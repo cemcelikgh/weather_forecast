@@ -1,11 +1,12 @@
-import SelectCity from "@/components/select-city/SelectCity";
-import WeatherForecast from "@/components/weather-forecast/WeatherForecast";
+import Selectors from "@/components/selectors/Selectors";
+import WeatherForecast
+  from "@/components/weather-forecast/WeatherForecast";
 
 function Home() {
   return (
     <main>
       <h1>Hava Tahmini</h1>
-      <SelectCity />
+      <Selectors />
       <WeatherForecast />
     </main>
   );

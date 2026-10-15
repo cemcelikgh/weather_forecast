@@ -1,7 +1,7 @@
 'use client';
 
-import { useAppSelector } from "@/lib/hooks";
 import { selectTheme } from "@/lib/features/themeSlice";
+import { useAppSelector } from "@/lib/hooks";
 
 function Html({
   children,
@@ -12,7 +12,11 @@ function Html({
   const theme = useAppSelector(selectTheme);
 
   return (
-    <html lang="tr" className={theme} style={{colorScheme: theme}}>
+    <html
+      lang="tr"
+      className={theme}
+      style={{ colorScheme: theme }}
+    >
       <body>
         {children}
       </body>
