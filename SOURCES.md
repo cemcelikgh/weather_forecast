@@ -21,6 +21,11 @@ eslint
 <br>Jun 2026
 <br><https://eslint.org/docs/latest/use/getting-started>
 
+netlify-cli
+<br>@netlify/functions
+<br>Oct 2026
+<br><https://docs.netlify.com/>
+
 Weather forecast REST API
 <br>Jun 2024
 <br><https://docs.tomorrow.io/reference/weather-forecast>

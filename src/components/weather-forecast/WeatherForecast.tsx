@@ -27,11 +27,7 @@ function WeatherForecast() {
   const loading = previousCity !== city.name;
 
   useEffect(() => {
-
-    const apiKey = process.env.NEXT_PUBLIC_WEA_FOR_API_KEY;
-    if (!apiKey) throw new Error('NEXT_PUBLIC_WEA_FOR_API_KEY is missing');
-
-    fetch(`https://api.tomorrow.io/v4/weather/forecast?location=${city.name}&timesteps=1d&units=metric&apikey=${apiKey}`, {
+    fetch(`/.netlify/functions/weatherForecast?city=${city.name}`, {
       method: 'GET',
       headers: { accept: 'application/json', 'accept-encoding': 'deflate, gzip, br' },
     }).then(response => {
@@ -47,7 +43,6 @@ function WeatherForecast() {
       setFailure(true);
       console.error(err);
     }).finally(() => { setPreviousCity(city.name) });
-
   }, [city]);
 
   return (

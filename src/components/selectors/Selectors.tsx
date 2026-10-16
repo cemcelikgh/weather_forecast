@@ -17,15 +17,11 @@ function Selectors() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-
     if ("geolocation" in navigator) {
-
       const success = (position: GeolocationPosition) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-        const apiKey = process.env.NEXT_PUBLIC_REV_GEO_API_KEY;
-        if (!apiKey) throw new Error('NEXT_PUBLIC_REV_GEO_API_KEY is missing');
-        fetch(`https://api.tomtom.com/search/2/reverseGeocode/${lat},${lon}.json?key=${apiKey}`)
+        fetch(`/.netlify/functions/reverseGeocode?lat=${lat}&lon=${lon}`)
         .then(response => {
           if(!response.ok) { throw new Error('Could not fetch the geocode.') };
           return response.json();
@@ -35,13 +31,9 @@ function Selectors() {
           dispatch(setCity({'id': cityId , 'name': cities.entities[cityId].name }));
         }).catch(err => { console.error(err) });
       };
-
       const error = (err: GeolocationPositionError) => { console.warn(err.message); };
-
       navigator.geolocation.getCurrentPosition(success, error);
-
     };
-
   }, [dispatch]);
 
   const handleSelectCity = (event: ChangeEvent<HTMLSelectElement>) => {
